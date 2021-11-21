@@ -25,7 +25,7 @@ true_distance_before_barrier = 40
 distance_before_barrier = 40
 
 #Define the maze creator's attributes
-maze_painter_speed = 10
+maze_painter_speed = 0
 maze_painter_pencolor = "black"
 maze_painter_fillcolor = "black"
 maze_painter_initial_heading = 90
@@ -41,14 +41,18 @@ maze_painter.setheading(maze_painter_initial_heading)
 
 #For loop to generate simple maze spiral with doors and walls
 for i in range(number_of_walls):
+    #To simplify the program create a variable that stores the length of each wall
+    wall_length = maze_painter_initial_distance + maze_painter_extra_distance
+
     #Don't draw a door on the first iteration to avoid maze overlap
-    if i < 1: #Will only not run on first iteration of for loop
-        maze_painter.forward(maze_painter_initial_distance + maze_painter_extra_distance)
+    if i < 1:
+        #Draw the first wall normally
+        maze_painter.forward(wall_length)
 
     #Draw a door in each wall after the first iteration
     else:
         #Draw a door opening 10 pixels after each turn
-        distance_before_door = rand.randint(0, maze_painter_initial_distance + maze_painter_extra_distance - door_width)
+        distance_before_door = rand.randint(0, wall_length - door_width)
         maze_painter.forward(distance_before_door)
         maze_painter.penup()
         maze_painter.forward(door_width)
@@ -57,7 +61,7 @@ for i in range(number_of_walls):
 
         #Only start drawing barriers after 4 new walls to avoid overlap
         if i > 4:
-            distance_before_barrier = true_distance_before_barrier
+            distance_before_barrier = rand.randint(0, wall_length - door_width - distance_before_door)
             maze_painter.forward(distance_before_barrier)
             maze_painter.left(90)
             maze_painter.forward(barrier_length)
@@ -65,7 +69,7 @@ for i in range(number_of_walls):
             maze_painter.right(90)
         
         #Move the painter forward, leaving behind a trail
-        maze_painter.forward(maze_painter_initial_distance + maze_painter_extra_distance - distance_before_door - distance_before_barrier)
+        maze_painter.forward(wall_length - distance_before_door - distance_before_barrier)
     
     #Change direction and distance for next iteration
     maze_painter_new_heading = maze_painter_initial_heading + maze_painter_turning_angle * i 
