@@ -21,7 +21,6 @@ extra_wall_length = 15
 distance_before_door = 10
 door_width = extra_wall_length * 2
 barrier_length = extra_wall_length * 2
-true_distance_before_barrier = 40
 distance_before_barrier = 40
 walls_before_doors = 3
 walls_before_barriers = 7
@@ -46,83 +45,85 @@ for i in range(number_of_walls):
     #To simplify the program create a variable that stores the length of each wall
     wall_length = maze_painter_initial_distance + maze_painter_extra_distance
 
-    #Don't draw a door on the first iteration to avoid maze overlap
-    if i < walls_before_doors:
-        #Don't account for walls or barriers if they aren't being drawn
-        distance_before_barrier = 0
-        distance_before_door = 0
-        #Draw the first wall normally
-        maze_painter.forward(wall_length)
-
-    #Draw a door in each wall after the first iteration
-    else:
-        #Generate random values for the distance from the start of the wall to barrriers and doors
-        distance_before_door = rand.randint(door_width, wall_length - door_width)
-        distance_before_barrier = rand.randint(door_width, wall_length - door_width)
-
-        #Ensure the barriers and doors don't overlap by continuously picking random variables until they are spread out enough
-        while (abs(distance_before_door - distance_before_barrier) < door_width):
-            #Generate random values for the distance from the start of the wall to barrriers and doors
+    #Generate random values for the positions of doors and barriers
+    distance_before_door = rand.randint(0, wall_length - door_width)
+    distance_before_barrier = rand.randint(0, wall_length - door_width)
+    
+    #Ensure barriers and doors can't render on top of each other by generating too close together
+    if (abs(distance_before_door - distance_before_barrier < door_width)):
+        #Generate new random values for the barriers and doors until a suitable one is found
+        while (abs(distance_before_door - distance_before_barrier < door_width)):
+            #Generate random values for the positions of doors and barriers
             distance_before_door = rand.randint(0, wall_length - door_width)
-            distance_before_barrier = rand.randint(door_width, wall_length - door_width)
-        
-        #Only start drawing barriers after a certain point to avoid overlap
-        if i < walls_before_barriers:
-            #Don't account for barrier length when they aren't being drawn yet
-            distance_before_barrier = 0
-
-            #Only draw walls with doors
+            distance_before_barrier = rand.randint(0, wall_length - door_width)
+    
+    
+    #Check if the maze shouldn't be drawing doors or barriers at this point
+    if (i < walls_before_doors or i < walls_before_barriers):
+        if (i < walls_before_doors):
+            #Draw a wall with no doors or barriers
+            maze_painter.forward(wall_length)
+        else:
+            #Draw the wall up until the door
             maze_painter.forward(distance_before_door)
+
+            #Draw the door
             maze_painter.penup()
             maze_painter.forward(door_width)
             maze_painter.pendown()
 
             #Draw the rest of the wall
             maze_painter.forward(wall_length - distance_before_door - door_width)
-
-        else:
-            #Check if the door will be drawn before the barrier
-            if distance_before_door < distance_before_barrier:
-                #Find the distance between the barrier and the door left to draw
-                distance_between_door_and_barrier = distance_before_barrier - distance_before_door
-
-                #Draw the door first
-                maze_painter.forward(distance_before_door)
-                maze_painter.penup()
-                maze_painter.forward(door_width)
-                maze_painter.pendown()
-
-                #Draw the barrier second
-                maze_painter.forward(distance_between_door_and_barrier)
-                maze_painter.left(90)
-                maze_painter.forward(barrier_length)
-                maze_painter.back(barrier_length)
-                maze_painter.right(90)
-
-                #Draw the rest of the wall
-                maze_painter.forward(wall_length - distance_before_door - door_width - distance_between_door_and_barrier)
-            
-            #Check if the barrier will be drawn before the door
-            if distance_before_door > distance_before_barrier:
-                #Find the distance between the barrier and the door left to draw
-                distance_between_door_and_barrier = distance_before_door - distance_before_barrier
-
-                #Draw the barrier first
-                maze_painter.forward(distance_before_barrier)
-                maze_painter.left(90)
-                maze_painter.forward(barrier_length)
-                maze_painter.back(barrier_length)
-                maze_painter.right(90)
-
-                #Draw the door second
-                maze_painter.forward(distance_between_door_and_barrier)
-                maze_painter.penup()
-                maze_painter.forward(door_width)
-                maze_painter.pendown()
-
-                #Draw the rest of the wall
-                maze_painter.forward(wall_length - distance_before_barrier - door_width - distance_between_door_and_barrier)
     
+    #Draw a wall with doors and barriers like normal
+    else:
+        if (distance_before_door < distance_before_barrier):
+            #Draw the wall up until the door
+            maze_painter.forward(distance_before_door)
+
+            #Draw the door
+            maze_painter.penup()
+            maze_painter.forward(door_width)
+            maze_painter.pendown()
+
+            #Reset back to original position
+            maze_painter.penup()
+            maze_painter.back(door_width + distance_before_door)
+
+            #Draw the barrier after
+            maze_painter.forward(distance_before_barrier)
+            maze_painter.pendown()
+            maze_painter.left(90)
+            maze_painter.forward(barrier_length)
+            maze_painter.back(barrier_length)
+            maze_painter.right(90)
+
+            #Draw the rest of the wall
+            maze_painter.forward(wall_length - distance_before_barrier)
+
+        if (distance_before_door > distance_before_barrier):
+            #Draw the wall up until the barrier
+            maze_painter.forward(distance_before_barrier)
+
+            #Draw the barrier
+            maze_painter.left(90)
+            maze_painter.forward(barrier_length)
+            maze_painter.back(barrier_length)
+            maze_painter.right(90)
+
+            #Reset back to original position
+            maze_painter.penup()
+            maze_painter.back(distance_before_barrier)
+
+            #Draw the door after
+            maze_painter.pendown()
+            maze_painter.forward(distance_before_door)
+            maze_painter.forward(door_width)
+            maze_painter.pendown()
+
+            #Draw the rest of the wall
+            maze_painter.forward(wall_length - distance_before_door - door_width)
+        
     #Change direction and distance for next iteration
     maze_painter_new_heading = maze_painter_initial_heading + maze_painter_turning_angle * i 
     maze_painter.setheading(maze_painter_new_heading)
