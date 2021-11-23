@@ -108,6 +108,7 @@ for i in range(number_of_walls):
             maze_painter.forward(distance_before_barrier)
 
             #Draw the barrier
+            maze_painter.pendown()
             maze_painter.left(90)
             maze_painter.forward(barrier_length)
             maze_painter.back(barrier_length)
@@ -140,6 +141,8 @@ maze_painter.hideturtle()
 
 
 #####-Functions-#####
+
+
 
 
 #####-Function Calls-#####
