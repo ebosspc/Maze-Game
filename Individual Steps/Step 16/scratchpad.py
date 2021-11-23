@@ -1,6 +1,6 @@
 '''
 PLTW Lesson 1.2.4
-@authors: Ethan Francolla
+@authors: Ethan the Python Master
 '''
 
 #####-Imports-#####
@@ -11,7 +11,9 @@ import turtle as trtl
 import random as rand
 
 
-#####-Setup-#####
+
+
+#####-Game Config-#####
 #Create turtle to generate the simple maze and define its initial attributes
 maze_painter = trtl.Turtle()
 
@@ -40,6 +42,31 @@ maze_painter.pencolor(maze_painter_pencolor)
 maze_painter.fillcolor(maze_painter_fillcolor)
 maze_painter.setheading(maze_painter_initial_heading)
 
+#####-Functions-#####
+def goto_door(distance_before_door):
+    #Draw the wall up until the door
+    maze_painter.pendown()
+    maze_painter.forward(distance_before_door)
+
+def goto_barrier(distance_before_barrier):
+    #Draw the wall up until the barrier
+    maze_painter.pendown()
+    maze_painter.forward(distance_before_barrier)
+
+def draw_barrier():
+    maze_painter.pendown()
+    maze_painter.left(90)
+    maze_painter.forward(barrier_length)
+    maze_painter.back(barrier_length)
+    maze_painter.right(90)
+
+def draw_door():
+    maze_painter.penup()
+    maze_painter.forward(door_width)
+    maze_painter.pendown()
+
+
+#####-Setup-#####
 #For loop to generate simple maze spiral with doors and walls
 for i in range(number_of_walls):
     #To simplify the program create a variable that stores the total length of each wall
@@ -58,12 +85,10 @@ for i in range(number_of_walls):
             distance_before_door = rand.randint(0, wall_length - door_width)
 
             #Draw the wall up until the door
-            maze_painter.forward(distance_before_door)
+            goto_door(distance_before_door)
 
             #Draw the door
-            maze_painter.penup()
-            maze_painter.forward(door_width)
-            maze_painter.pendown()
+            draw_door()
 
             #Draw the rest of the wall
             maze_painter.forward(wall_length - distance_before_door - door_width)
@@ -83,21 +108,16 @@ for i in range(number_of_walls):
         #Check to see if the door is supposed to be drawn before the barrier
         if (distance_before_door < distance_before_barrier):
             #Draw the wall up until the door
-            maze_painter.pendown()
-            maze_painter.forward(distance_before_door)
+            goto_door(distance_before_door)
 
             #Draw the door
-            maze_painter.penup()
-            maze_painter.forward(door_width)
-            maze_painter.pendown()
+            draw_door()
 
-            #Draw the barrier after
+            #Go to the starting location of the barrier
             maze_painter.forward(distance_before_barrier-door_width-distance_before_door)
-            maze_painter.pendown()
-            maze_painter.left(90)
-            maze_painter.forward(barrier_length)
-            maze_painter.back(barrier_length)
-            maze_painter.right(90)
+
+            #Draw the barrier
+            draw_barrier()
 
             #Draw the rest of the wall
             maze_painter.forward(wall_length - distance_before_barrier)
@@ -105,24 +125,20 @@ for i in range(number_of_walls):
         #Check to see if the barrier shoudl be drawn before the door
         if (distance_before_door > distance_before_barrier):
             #Draw the wall up until the barrier
-            maze_painter.forward(distance_before_barrier)
+            goto_barrier(distance_before_barrier)
 
             #Draw the barrier
-            maze_painter.left(90)
-            maze_painter.forward(barrier_length)
-            maze_painter.back(barrier_length)
-            maze_painter.right(90)
+            draw_barrier()
 
             #Reset back to original position
             maze_painter.penup()
             maze_painter.back(distance_before_barrier)
 
-            #Draw the door after
-            maze_painter.pendown()
-            maze_painter.forward(distance_before_door)
-            maze_painter.penup()
-            maze_painter.forward(door_width)
-            maze_painter.pendown()
+            #Go to the door location
+            goto_door(distance_before_door)
+
+            #Draw the door
+            draw_door()
 
             #Draw the rest of the wall
             maze_painter.forward(wall_length - distance_before_door - door_width)
@@ -134,12 +150,6 @@ for i in range(number_of_walls):
 
 #Hide the maze drawing turtle from view
 maze_painter.hideturtle()
-
-
-#####-Game Config-#####
-
-
-#####-Functions-#####
 
 
 #####-Function Calls-#####
