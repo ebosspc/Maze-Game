@@ -80,8 +80,6 @@ for i in range(number_of_walls):
             distance_before_door = rand.randint(0, wall_length - door_width)
             distance_before_barrier = rand.randint(door_width, wall_length - door_width)
         
-        print(i,distance_before_door)
-        print(i,distance_before_barrier)
         #Check to see if the door is supposed to be drawn before the barrier
         if (distance_before_door < distance_before_barrier):
             #Draw the wall up until the door
