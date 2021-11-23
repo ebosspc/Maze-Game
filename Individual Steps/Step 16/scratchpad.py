@@ -22,7 +22,7 @@ distance_before_door = 10
 door_width = extra_wall_length * 2
 barrier_length = extra_wall_length * 2
 distance_before_barrier = 40
-walls_before_doors = 3
+walls_before_doors = 1
 walls_before_barriers = 7
 
 #Define the maze creator's attributes
@@ -42,28 +42,21 @@ maze_painter.setheading(maze_painter_initial_heading)
 
 #For loop to generate simple maze spiral with doors and walls
 for i in range(number_of_walls):
-    #To simplify the program create a variable that stores the length of each wall
+    #To simplify the program create a variable that stores the total length of each wall
     wall_length = maze_painter_initial_distance + maze_painter_extra_distance
 
-    #Generate random values for the positions of doors and barriers
-    distance_before_door = rand.randint(0, wall_length - door_width)
-    distance_before_barrier = rand.randint(0, wall_length - door_width)
-    
-    #Ensure barriers and doors can't render on top of each other by generating too close together
-    if (abs(distance_before_door - distance_before_barrier < door_width)):
-        #Generate new random values for the barriers and doors until a suitable one is found
-        while (abs(distance_before_door - distance_before_barrier < door_width)):
-            #Generate random values for the positions of doors and barriers
-            distance_before_door = rand.randint(0, wall_length - door_width)
-            distance_before_barrier = rand.randint(0, wall_length - door_width)
-    
-    
     #Check if the maze shouldn't be drawing doors or barriers at this point
     if (i < walls_before_doors or i < walls_before_barriers):
+        #Check to ensure if no doors should be drawn
         if (i < walls_before_doors):
             #Draw a wall with no doors or barriers
             maze_painter.forward(wall_length)
+        
+        #Draw a wall with only a door
         else:
+            #Generate a random value for the placement of the door
+            distance_before_door = rand.randint(0, wall_length - door_width)
+
             #Draw the wall up until the door
             maze_painter.forward(distance_before_door)
 
@@ -77,6 +70,19 @@ for i in range(number_of_walls):
     
     #Draw a wall with doors and barriers like normal
     else:
+        #Generate random values for the placement of doors and barriers
+        distance_before_door = rand.randint(0, wall_length - door_width)
+        distance_before_barrier = rand.randint(door_width, wall_length - door_width)
+    
+        #Ensure barriers and doors can't render on top of each other by generating too close together
+        if (abs(distance_before_door - distance_before_barrier < door_width)):
+            #Generate new random values for the barriers and doors until a suitable one is found
+            while (abs(distance_before_door - distance_before_barrier < door_width)):
+                #Generate random values for the positions of doors and barriers
+                distance_before_door = rand.randint(0, wall_length - door_width)
+                distance_before_barrier = rand.randint(door_width, wall_length - door_width)
+        
+        #Check to see if the door is supposed to be drawn before the barrier
         if (distance_before_door < distance_before_barrier):
             #Draw the wall up until the door
             maze_painter.forward(distance_before_door)
@@ -100,7 +106,8 @@ for i in range(number_of_walls):
 
             #Draw the rest of the wall
             maze_painter.forward(wall_length - distance_before_barrier)
-
+        
+        #Check to see if the barrier shoudl be drawn before the door
         if (distance_before_door > distance_before_barrier):
             #Draw the wall up until the barrier
             maze_painter.forward(distance_before_barrier)
@@ -118,6 +125,7 @@ for i in range(number_of_walls):
             #Draw the door after
             maze_painter.pendown()
             maze_painter.forward(distance_before_door)
+            maze_painter.penup()
             maze_painter.forward(door_width)
             maze_painter.pendown()
 
