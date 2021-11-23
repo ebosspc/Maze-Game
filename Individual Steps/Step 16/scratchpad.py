@@ -18,10 +18,12 @@ maze_painter = trtl.Turtle()
 #Define maze properties
 number_of_walls = 25
 extra_wall_length = 15
+distance_before_door = 10
 door_width = extra_wall_length * 2
 barrier_length = extra_wall_length * 2
+distance_before_barrier = 40
 walls_before_doors = 1
-walls_before_barriers = 7
+walls_before_barriers = 8
 
 #Define the maze creator's attributes
 maze_painter_speed = 0
@@ -78,9 +80,12 @@ for i in range(number_of_walls):
             distance_before_door = rand.randint(0, wall_length - door_width)
             distance_before_barrier = rand.randint(door_width, wall_length - door_width)
         
+        print(i,distance_before_door)
+        print(i,distance_before_barrier)
         #Check to see if the door is supposed to be drawn before the barrier
         if (distance_before_door < distance_before_barrier):
             #Draw the wall up until the door
+            maze_painter.pendown()
             maze_painter.forward(distance_before_door)
 
             #Draw the door
@@ -88,12 +93,8 @@ for i in range(number_of_walls):
             maze_painter.forward(door_width)
             maze_painter.pendown()
 
-            #Reset back to original position
-            maze_painter.penup()
-            maze_painter.back(door_width + distance_before_door)
-
             #Draw the barrier after
-            maze_painter.forward(distance_before_barrier)
+            maze_painter.forward(distance_before_barrier-door_width-distance_before_door)
             maze_painter.pendown()
             maze_painter.left(90)
             maze_painter.forward(barrier_length)
@@ -103,8 +104,8 @@ for i in range(number_of_walls):
             #Draw the rest of the wall
             maze_painter.forward(wall_length - distance_before_barrier)
         
-        #Check to see if the barrier should be drawn before the door
-        elif:
+        #Check to see if the barrier shoudl be drawn before the door
+        if (distance_before_door > distance_before_barrier):
             #Draw the wall up until the barrier
             maze_painter.forward(distance_before_barrier)
 
