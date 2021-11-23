@@ -18,10 +18,8 @@ maze_painter = trtl.Turtle()
 #Define maze properties
 number_of_walls = 25
 extra_wall_length = 15
-distance_before_door = 10
 door_width = extra_wall_length * 2
 barrier_length = extra_wall_length * 2
-distance_before_barrier = 40
 walls_before_doors = 1
 walls_before_barriers = 7
 
@@ -75,12 +73,10 @@ for i in range(number_of_walls):
         distance_before_barrier = rand.randint(door_width, wall_length - door_width)
     
         #Ensure barriers and doors can't render on top of each other by generating too close together
-        if (abs(distance_before_door - distance_before_barrier < door_width)):
-            #Generate new random values for the barriers and doors until a suitable one is found
-            while (abs(distance_before_door - distance_before_barrier < door_width)):
-                #Generate random values for the positions of doors and barriers
-                distance_before_door = rand.randint(0, wall_length - door_width)
-                distance_before_barrier = rand.randint(door_width, wall_length - door_width)
+        while (abs(distance_before_door - distance_before_barrier) < door_width):
+            #Generate random values for the positions of doors and barriers
+            distance_before_door = rand.randint(0, wall_length - door_width)
+            distance_before_barrier = rand.randint(door_width, wall_length - door_width)
         
         #Check to see if the door is supposed to be drawn before the barrier
         if (distance_before_door < distance_before_barrier):
@@ -107,8 +103,8 @@ for i in range(number_of_walls):
             #Draw the rest of the wall
             maze_painter.forward(wall_length - distance_before_barrier)
         
-        #Check to see if the barrier shoudl be drawn before the door
-        if (distance_before_door > distance_before_barrier):
+        #Check to see if the barrier should be drawn before the door
+        elif:
             #Draw the wall up until the barrier
             maze_painter.forward(distance_before_barrier)
 
