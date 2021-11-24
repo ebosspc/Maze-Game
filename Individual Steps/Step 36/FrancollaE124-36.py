@@ -45,6 +45,7 @@ maze_navigator_fillcolor = "blue"
 maze_navigator_shape = "triangle"
 maze_navigator_shapesize = 0.6
 maze_navigator_pencolor = "blue"
+maze_navigator_speed = 0
 maze_navigator_initial_x_position = -(maze_painter_initial_distance)
 maze_navigator_initial_y_position = maze_painter_initial_distance
 
@@ -61,7 +62,7 @@ maze_navigator.fillcolor(maze_navigator_fillcolor)
 maze_navigator.pencolor(maze_navigator_pencolor)
 maze_navigator.shape(maze_navigator_shape)
 maze_navigator.shapesize(maze_navigator_shapesize)
-
+maze_navigator.speed(maze_navigator_speed)
 
 #####-Functions-#####
 #Define a function to move the maze drawing turtle to the necessary location to start drawing a door
