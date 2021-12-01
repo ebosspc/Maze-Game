@@ -1,6 +1,6 @@
 '''
 PLTW Lesson 1.2.4
-@authors: Ethan the Python Master
+@authors: Ethan Francolla, Kaelin Conklin
 '''
 
 #####-Imports-#####
