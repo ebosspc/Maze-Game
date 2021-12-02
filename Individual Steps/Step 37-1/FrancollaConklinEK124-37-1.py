@@ -34,11 +34,11 @@ while (continue_with_loop == 1):
         continue_with_loop = 0
 
     #Check if the user selected no and adjust variables appropriately
-    if instructions_request == "n":
+    elif instructions_request == "n":
         instructions_request = 0
         continue_with_loop = 0
     
-    if instructions_request == "d":
+    elif instructions_request == "d":
         developer_mode = 1
         continue_with_loop = 1
 
@@ -224,20 +224,28 @@ def g_pressed():
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def o_pressed():
     #Allow these variable to be accessed in other functions
-    global maze_navigator_x_moving_distance, maze_navigator_y_moving_distance 
+    global maze_navigator_x_moving_distance, maze_navigator_y_moving_distance
 
     #Increase the distance that the maze navigator will travel each time a function is called to move it, essentially increasing its "speed"
     maze_navigator_x_moving_distance = maze_navigator_x_moving_distance + 1
     maze_navigator_y_moving_distance = maze_navigator_y_moving_distance + 1
+
+    #Print a statement for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Maze Runner x and y moving distance increased by 1. It is now:", maze_navigator_x_moving_distance)
 
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def l_pressed():
     #Allow these variable to be accessed in other functions
     global maze_navigator_x_moving_distance, maze_navigator_y_moving_distance 
 
-    #Decrease the distance that the maze navigator will travel each time a function is called to move it, essentially increasing its "speed"
+    #Decrease the distance that the maze navigator will travel each time a function is called to move it, essentially decreasing its "speed"
     maze_navigator_x_moving_distance = maze_navigator_x_moving_distance - 1
     maze_navigator_y_moving_distance = maze_navigator_y_moving_distance - 1
+
+    #Print a statement for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Maze Runner x and y moving distace decreased by 1. It is now:", maze_navigator_x_moving_distance)
 
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def p_pressed():
