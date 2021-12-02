@@ -182,6 +182,11 @@ def generate_rand_barrier_distance(wall_length):
     #Ensure random barriers aren't drawn too close to the edge of the wall
     distance_before_barrier = rand.randint(door_width, wall_length - door_width)
 
+#Define a function to terminate the program when the user desires
+def terminate_program():
+    #Clear all turtles, drawing, and images present on the screen
+    print("Terminating program...")
+
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def up_pressed():
     #Turn the maze navigator up and move it forward
@@ -218,14 +223,25 @@ def g_pressed():
 
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def o_pressed():
-    print("The o key has been pressed")
+    #Allow these variable to be accessed in other functions
+    global maze_navigator_x_moving_distance, maze_navigator_y_moving_distance 
+
+    #Increase the distance that the maze navigator will travel each time a function is called to move it, essentially increasing its "speed"
+    maze_navigator_x_moving_distance = maze_navigator_x_moving_distance + 1
+    maze_navigator_y_moving_distance = maze_navigator_y_moving_distance + 1
 
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def l_pressed():
-    print("The l key has been pressed")
+    #Allow these variable to be accessed in other functions
+    global maze_navigator_x_moving_distance, maze_navigator_y_moving_distance 
+
+    #Decrease the distance that the maze navigator will travel each time a function is called to move it, essentially increasing its "speed"
+    maze_navigator_x_moving_distance = maze_navigator_x_moving_distance - 1
+    maze_navigator_y_moving_distance = maze_navigator_y_moving_distance - 1
 
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def p_pressed():
+    #Output a message for debugging
     print("The p key has been pressed")
 
 
