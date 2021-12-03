@@ -1,6 +1,6 @@
 '''
 PLTW Lesson 1.2.4
-@authors: Ethan the Python Master
+@authors: Ethan Francolla, Kaelin Conklin
 '''
 
 #####-Imports-#####
@@ -10,12 +10,98 @@ import turtle as trtl
 #Import random library to generate random values to be used later
 import random as rand
 
+#Import time library that contains functions that will be used for timing
+import time as time
 
+#####-Game Info-#####
+#Create a message in the terminal instructing users how to use the program
+print("-----Welcome to the game!-----\nWould you like to read the instructions for the game?")
 
+#Define this variable as an integer. It doesn't really matter what it is as long as it isn't 1 or 0
+instructions_request = 2
+
+#Define a variable that will either continue or break the following while loop
+continue_with_loop = 1
+
+#Define a variable to determine whether or not a user is in developer mode
+developer_mode = 0
+
+#Ask the user if they want instructions until they enter a valid input
+while (continue_with_loop == 1):
+    #Store the user input in a variable
+    instructions_request = str(input("Please write y for yes, n for no, and d for developer mode: "))
+
+    #Check if the user selected yes and adjust variables appropriately
+    if instructions_request == "y":
+        instructions_request = 1
+        continue_with_loop = 0
+
+    #Check if the user selected no and adjust variables appropriately
+    elif instructions_request == "n":
+        instructions_request = 0
+        continue_with_loop = 0
+    
+    elif instructions_request == "d":
+        developer_mode = 1
+        continue_with_loop = 1
+
+        #Print a message to inform a user that they are in developer mode
+        print("You are now in developer mode.")
+    
+    #Output an error message if the user enters an invalid input
+    else:
+        print("Sorry! That was not a valid input.\nPlease try again.")
+
+#Print the instructions if the user wants them
+if instructions_request == 1:
+    #Explain to users how the game work
+    print("\n-Game Info-")
+    print("This game will generate a randomly constructed filled with doors and barriers.")
+    print("doors are blank spaces or gaps in the wall that you can guide the maze navigator through.")
+    print("Eventually, if you work your way through enough doors you will reach the outside of the maze and complete the game!")
+    print("Barriers are obstructions you will find in your path, seeming like parts of the wall jutting out.")
+    print("To complete your objective, you will have to go through doors in the maze while avoiding barrier obstructions.")
+    print("The objective of the game is to use your keyboard to control a maze navigator and guide it out of the maze.")
+
+    #Describe the game controls
+    print("Below you will find a list of controls for the maze navigator.")
+    print("\n-Controls-")
+    print("Up Arrow: Turn up and go up")
+    print("Right Arrow: Turn right and go right")
+    print("Down Arrow: Turn down and go down")
+    print("Left Arrow: Turn left and go left")
+    print("G: Go forward in the direction the navigator is pointed")
+    print("O: Increase the speed of the navigator")
+    print("L: Decrease the speed of the navigator")
+    print("P: Terminate the game")
+
+elif instructions_request == 0:
+    print("Welcome back!")
+
+#Inform the user the game is starting
+print("Lets start the game!")
+if developer_mode == 1:
+    print("You are running this program as a developer.")
 
 #####-Game Config-#####
-#Create turtle to generate the simple maze and define its initial attributes
+#Define an empty list that will be used to store all of the turtles in one place
+master_turtles_list = []
+
+#Create turtle to generate the simple maze and define its initial attributes and add it to the main turtles list
 maze_painter = trtl.Turtle()
+master_turtles_list.append(maze_painter)
+
+#Output a message for debugging if the user is in developer mode
+if developer_mode == 1:
+    print("Maze Painter Turtle Created")
+
+#Create turtle which will act as the "maze runner", which the user can control to guide it through the maze and add it to the main turtles list
+maze_navigator = trtl.Turtle()
+master_turtles_list.append(maze_navigator)
+
+#Output a message for debugging if the user is in developer mode
+if developer_mode == 1:
+    print("Maze Navigator Turtle Created")
 
 #Define maze properties
 number_of_walls = 25
@@ -36,37 +122,228 @@ maze_painter_turning_angle = 90
 maze_painter_initial_distance = 15
 maze_painter_extra_distance = 0
 
+#Define the maze navigator's attributes
+maze_navigator_x_moving_distance = 2
+maze_navigator_y_moving_distance = 2
+maze_navigator_forward_moving_distance = 2
+maze_navigator_fillcolor = "blue"
+maze_navigator_shape = "triangle"
+maze_navigator_shapesize = 0.5
+maze_navigator_pencolor = "blue"
+maze_navigator_speed = 0
+maze_navigator_initial_x_position = -(maze_painter_initial_distance)
+maze_navigator_initial_y_position = maze_painter_initial_distance
+
 #Give the maze creator turtle its defined attributes
 maze_painter.speed(maze_painter_speed)
 maze_painter.pencolor(maze_painter_pencolor)
 maze_painter.fillcolor(maze_painter_fillcolor)
 maze_painter.setheading(maze_painter_initial_heading)
 
+#Give the maze navigator turtle its defined attributes
+maze_navigator.penup()
+maze_navigator.goto(maze_navigator_initial_x_position, maze_navigator_initial_y_position)
+maze_navigator.fillcolor(maze_navigator_fillcolor)
+maze_navigator.pencolor(maze_navigator_pencolor)
+maze_navigator.shape(maze_navigator_shape)
+maze_navigator.shapesize(maze_navigator_shapesize)
+maze_navigator.speed(maze_navigator_speed)
+
 #####-Functions-#####
+#Define a function to move the maze drawing turtle to the necessary location to start drawing a door
+#Pass distance_before_door through as a parameter, since it will change everytime this function is called
 def goto_door(distance_before_door):
     #Draw the wall up until the door
     maze_painter.pendown()
     maze_painter.forward(distance_before_door)
 
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Went to Door")
+
+#Define a function to move the maze drawing turtle to the necessary location to start drawing a barrier
+#Pass distance_before_barrier through as a parameter, since it will change everytime this function is called
 def goto_barrier(distance_before_barrier):
     #Draw the wall up until the barrier
     maze_painter.pendown()
     maze_painter.forward(distance_before_barrier)
 
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Went to Barrier")
+
+#Define a function to draw a barrier in the maze
 def draw_barrier():
+    #Draw a barrier segment off of the wall
     maze_painter.pendown()
     maze_painter.left(90)
     maze_painter.forward(barrier_length)
     maze_painter.back(barrier_length)
     maze_painter.right(90)
 
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Drew Barrier")
+
+#Define a function to draw a door in the maze
 def draw_door():
+    #Draw a door in a wall via a temporary pen liftoff
     maze_painter.penup()
     maze_painter.forward(door_width)
     maze_painter.pendown()
 
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Drew Door")
+
+#Define a function to randomly generate the position of the door
+#Pass wall_length through as a parameter, since it will change everytime this function is called
+def generate_rand_door_distance(wall_length):
+    #Allow the distance before door's variable to accessed in other places in the code
+    global distance_before_door
+
+    #Ensure random doors aren't drawn too close to the edge of a wall, creating visual errors
+    distance_before_door = rand.randint(0, wall_length - door_width)
+
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Generated Random Door Distance")
+
+#Define a function to randomly generate the position of the door
+#Pass wall_length through as a parameter, since it will change everytime this function is called
+def generate_rand_barrier_distance(wall_length):
+    #Allow the distance before barrier's variable to accessed in other places in the code
+    global distance_before_barrier
+
+    #Ensure random barriers aren't drawn too close to the edge of the wall
+    distance_before_barrier = rand.randint(door_width, wall_length - door_width)
+
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Generated Random Barrier Distance")
+
+#Define a function to terminate the program when the user desires
+def terminate_program():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Terminating program...")
+    
+    #Clear all turtles, drawing, and images present on the screen
+    for i in range(len(master_turtles_list)):
+        #Clear the turtles and their traces
+        master_turtles_list[i].clear()
+        master_turtles_list[i].hideturtle()
+
+    #Output message informing the user they terminated the program
+    print("You have successfully terminated the program.\nThanks for playing!")
+
+#Define a function to execute a specified action below if a user presses a certain key on their keyboard
+def up_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Up Arrow pressed")
+
+    #Turn the maze navigator up and move it forward
+    maze_navigator.pendown()
+    maze_navigator.setheading(90)
+    maze_navigator.goto(maze_navigator.xcor(), maze_navigator.ycor() + maze_navigator_y_moving_distance)
+
+#Define a function to execute a specified action below if a user presses a certain key on their keyboard
+def down_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Down Arrow pressed")
+
+    #Turn the maze navigator down and move it forward
+    maze_navigator.pendown()
+    maze_navigator.setheading(270)
+    maze_navigator.goto(maze_navigator.xcor(), maze_navigator.ycor() - maze_navigator_y_moving_distance)
+
+#Define a function to execute a specified action below if a user presses a certain key on their keyboard
+def left_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Left Arrow pressed")
+
+    #Turn the maze navigator left and move it forward
+    maze_navigator.pendown()
+    maze_navigator.setheading(180)
+    maze_navigator.goto(maze_navigator.xcor() - maze_navigator_x_moving_distance, maze_navigator.ycor())
+
+#Define a function to execute a specified action below if a user presses a certain key on their keyboard
+def right_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Right Arrow pressed")
+
+    #Turn the maze navigator right and move it forward
+    maze_navigator.pendown()
+    maze_navigator.setheading(0)
+    maze_navigator.goto(maze_navigator.xcor() + maze_navigator_x_moving_distance, maze_navigator.ycor())
+
+#Define a function to execute a specified action below if a user presses a certain key on their keyboard
+def g_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("G pressed")
+    
+    #Move the maze navigator forward
+    maze_navigator.pendown()
+    maze_navigator.forward(maze_navigator_forward_moving_distance)
+
+#Define a function to execute a specified action below if a user presses a certain key on their keyboard
+def o_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("O pressed")
+    
+    #Allow these variable to be accessed in other functions
+    global maze_navigator_x_moving_distance, maze_navigator_y_moving_distance
+
+    #Increase the distance that the maze navigator will travel each time a function is called to move it, essentially increasing its "speed"
+    maze_navigator_x_moving_distance = maze_navigator_x_moving_distance + 1
+    maze_navigator_y_moving_distance = maze_navigator_y_moving_distance + 1
+
+    #Print a statement for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Maze Runner x and y moving distance increased by 1. It is now:", maze_navigator_x_moving_distance)
+
+#Define a function to execute a specified action below if a user presses a certain key on their keyboard
+def l_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("L pressed")
+
+    #Allow these variable to be accessed in other functions
+    global maze_navigator_x_moving_distance, maze_navigator_y_moving_distance 
+
+    #Decrease the distance that the maze navigator will travel each time a function is called to move it, essentially decreasing its "speed"
+    maze_navigator_x_moving_distance = maze_navigator_x_moving_distance - 1
+    maze_navigator_y_moving_distance = maze_navigator_y_moving_distance - 1
+
+    #Print a statement for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Maze Runner x and y moving distace decreased by 1. It is now:", maze_navigator_x_moving_distance)
+
+#Define a function to execute a specified action below if a user presses a certain key on their keyboard
+def p_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("P pressed")
+    
+    #Terminate the program
+    terminate_program()
+
 
 #####-Setup-#####
+'''
+Create a randomly generated maze in a for loop with a contorllable features
+define by varibles in the Game Config Section.
+Each time the program is run, a new randomly generated maze will be created.
+Although checks are not built in to ensure the maze will be 100% solvable,
+due to the way i is cosntructed there will typically always be at least one solution.
+'''
+
 #For loop to generate simple maze spiral with doors and walls
 for i in range(number_of_walls):
     #To simplify the program create a variable that stores the total length of each wall
@@ -82,7 +359,7 @@ for i in range(number_of_walls):
         #Draw a wall with only a door
         else:
             #Generate a random value for the placement of the door
-            distance_before_door = rand.randint(0, wall_length - door_width)
+            generate_rand_door_distance(wall_length)
 
             #Draw the wall up until the door
             goto_door(distance_before_door)
@@ -92,18 +369,22 @@ for i in range(number_of_walls):
 
             #Draw the rest of the wall
             maze_painter.forward(wall_length - distance_before_door - door_width)
+
+            #Output a message for debugging if the user is in developer mode
+            if developer_mode == 1:
+                print("Drew Rest of Wall")
     
     #Draw a wall with doors and barriers like normal
     else:
         #Generate random values for the placement of doors and barriers
-        distance_before_door = rand.randint(0, wall_length - door_width)
-        distance_before_barrier = rand.randint(door_width, wall_length - door_width)
+        generate_rand_door_distance(wall_length)
+        generate_rand_barrier_distance(wall_length)
     
         #Ensure barriers and doors can't render on top of each other by generating too close together
         while (abs(distance_before_door - distance_before_barrier) < door_width):
             #Generate random values for the positions of doors and barriers
-            distance_before_door = rand.randint(0, wall_length - door_width)
-            distance_before_barrier = rand.randint(door_width, wall_length - door_width)
+            generate_rand_door_distance(wall_length)
+            generate_rand_barrier_distance(wall_length)
         
         #Check to see if the door is supposed to be drawn before the barrier
         if (distance_before_door < distance_before_barrier):
@@ -114,13 +395,21 @@ for i in range(number_of_walls):
             draw_door()
 
             #Go to the starting location of the barrier
-            maze_painter.forward(distance_before_barrier-door_width-distance_before_door)
+            maze_painter.forward(distance_before_barrier - door_width - distance_before_door)
+
+            #Output a message for debugging if the user is in developer mode
+            if developer_mode == 1:
+                print("Went to Barrier")
 
             #Draw the barrier
             draw_barrier()
 
             #Draw the rest of the wall
             maze_painter.forward(wall_length - distance_before_barrier)
+
+            #Output a message for debugging if the user is in developer mode
+            if developer_mode == 1:
+                print("Drew Rest of Wall")
         
         #Check to see if the barrier shoudl be drawn before the door
         if (distance_before_door > distance_before_barrier):
@@ -142,6 +431,10 @@ for i in range(number_of_walls):
 
             #Draw the rest of the wall
             maze_painter.forward(wall_length - distance_before_door - door_width)
+
+            #Output a message for debugging if the user is in developer mode
+            if developer_mode == 1:
+                print("Drew Rest of Wall")
         
     #Change direction and distance for next iteration
     maze_painter_new_heading = maze_painter_initial_heading + maze_painter_turning_angle * i 
@@ -153,5 +446,35 @@ maze_painter.hideturtle()
 
 
 #####-Function Calls-#####
+#Generate a screen for the game to diplay on
 wn = trtl.Screen()
+
+#Execute the function below if the specified key is pressed
+wn.onkeypress(up_pressed, "Up")
+
+#Execute the function below if the specified key is pressed
+wn.onkeypress(down_pressed, "Down")
+
+#Execute the function below if the specified key is pressed
+wn.onkeypress(left_pressed, "Left")
+
+#Execute the function below if the specified key is pressed
+wn.onkeypress(right_pressed, "Right")
+
+#Execute the function below if the specified key is pressed
+wn.onkeypress(g_pressed, "g")
+
+#Execute the function below if the specified key is pressed
+wn.onkeypress(o_pressed, "o")
+
+#Execute the function below if the specified key is pressed
+wn.onkeypress(l_pressed, "l")
+
+#Execute the function below if the specified key is pressed
+wn.onkeypress(p_pressed, "p")
+
+#Listen for the user's key presses to control the game
+wn.listen()
+
+#Keep the display running and persistent
 wn.mainloop()
