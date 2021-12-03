@@ -10,6 +10,9 @@ import turtle as trtl
 #Import random library to generate random values to be used later
 import random as rand
 
+#Import time library that contains functions that will be used for timing
+import time as time
+
 #####-Game Info-#####
 #Create a message in the terminal instructing users how to use the program
 print("-----Welcome to the game!-----\nWould you like to read the instructions for the game?")
@@ -81,11 +84,16 @@ if developer_mode == 1:
     print("You are running this program as a developer.")
 
 #####-Game Config-#####
-#Create turtle to generate the simple maze and define its initial attributes
-maze_painter = trtl.Turtle()
+#Define an empty list that will be used to store all of the turtles in one place
+master_turtles_list = []
 
-#Create turtle which will act as the "maze runner", which the user can control to guide it through the maze
+#Create turtle to generate the simple maze and define its initial attributes and add it to the main turtles list
+maze_painter = trtl.Turtle()
+master_turtles_list.append(maze_painter)
+
+#Create turtle which will act as the "maze runner", which the user can control to guide it through the maze and add it to the main turtles list
 maze_navigator = trtl.Turtle()
+master_turtles_list.append(maze_navigator)
 
 #Define maze properties
 number_of_walls = 25
@@ -184,11 +192,25 @@ def generate_rand_barrier_distance(wall_length):
 
 #Define a function to terminate the program when the user desires
 def terminate_program():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Terminating program...")
+    
     #Clear all turtles, drawing, and images present on the screen
-    print("Terminating program...")
+    for i in range(len(master_turtles_list)):
+        #Clear the turtles and their traces
+        master_turtles_list[i].clear()
+        master_turtles_list[i].hideturtle()
+
+    #Output message informing the user they terminated the program
+    print("You have successfully terminated the program.\nThanks for playing!")
 
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def up_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Up Arrow pressed")
+
     #Turn the maze navigator up and move it forward
     maze_navigator.pendown()
     maze_navigator.setheading(90)
@@ -196,6 +218,10 @@ def up_pressed():
 
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def down_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Down Arrow pressed")
+
     #Turn the maze navigator down and move it forward
     maze_navigator.pendown()
     maze_navigator.setheading(270)
@@ -203,6 +229,10 @@ def down_pressed():
 
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def left_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Left Arrow pressed")
+
     #Turn the maze navigator left and move it forward
     maze_navigator.pendown()
     maze_navigator.setheading(180)
@@ -210,6 +240,10 @@ def left_pressed():
 
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def right_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("Right Arrow pressed")
+
     #Turn the maze navigator right and move it forward
     maze_navigator.pendown()
     maze_navigator.setheading(0)
@@ -217,12 +251,20 @@ def right_pressed():
 
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def g_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("G pressed")
+    
     #Move the maze navigator forward
     maze_navigator.pendown()
     maze_navigator.forward(maze_navigator_forward_moving_distance)
 
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def o_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("O pressed")
+    
     #Allow these variable to be accessed in other functions
     global maze_navigator_x_moving_distance, maze_navigator_y_moving_distance
 
@@ -236,6 +278,10 @@ def o_pressed():
 
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def l_pressed():
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("L pressed")
+
     #Allow these variable to be accessed in other functions
     global maze_navigator_x_moving_distance, maze_navigator_y_moving_distance 
 
@@ -249,8 +295,12 @@ def l_pressed():
 
 #Define a function to execute a specified action below if a user presses a certain key on their keyboard
 def p_pressed():
-    #Output a message for debugging
-    print("The p key has been pressed")
+    #Output a message for debugging if the user is in developer mode
+    if developer_mode == 1:
+        print("P pressed")
+    
+    #Terminate the program
+    terminate_program()
 
 
 #####-Setup-#####
