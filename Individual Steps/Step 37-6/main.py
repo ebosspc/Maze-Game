@@ -631,7 +631,7 @@ for i in range(number_of_walls):
             if developer_mode == 1:
                 print("Drew Rest of Wall")
         
-    #Change direction and distance for next iteration
+    #Change direction and distance
     maze_painter_new_heading = maze_painter_initial_heading + maze_painter_turning_angle * i 
     maze_painter.setheading(maze_painter_new_heading)
     maze_painter_extra_distance = maze_painter_extra_distance + extra_wall_length
