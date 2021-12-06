@@ -22,9 +22,11 @@ def print_instructions():
     print("Barriers are obstructions you will find in your path, seeming like parts of the wall jutting out.")
     print("To complete your objective, you will have to go through doors in the maze while avoiding barrier obstructions.")
     print("If you hit an obstruction like a wall or barrier, you will be reset back to the center of the maze and lose a life and be given a time penalty.")
+    print("For this reason, you probably want to avoid hitting the wall at all costs.")
     print("You only have 4 lives, so use them wisely!")
     print("The objective of the game is to use your keyboard to control a maze navigator and guide it out of the maze.\nThe faster the better!")
-    print("Try getting your final time as low as possible.")
+    print("Although controls are provided for you to increase the speed of the navigator,\ntry learning how to control it on a lower speed before moving to a higher one.")
+    print("Try getting your final time as low as possible.\nGood Luck!")
 
     #Describe the game controls
     print("\n-Controls-")
