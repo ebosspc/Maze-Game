@@ -27,7 +27,6 @@ def print_instructions():
     print("Try getting your final time as low as possible.")
 
     #Describe the game controls
-    print("Below you will find a list of controls for the maze navigator.")
     print("\n-Controls-")
     print("Up Arrow: Turn up and go up")
     print("Right Arrow: Turn right and go right")
