@@ -41,7 +41,8 @@ while (continue_with_loop == 1):
     elif instructions_request == "n":
         instructions_request = 0
         continue_with_loop = 0
-        
+    
+    #Check if the user wants to enter developer mode
     elif instructions_request == "d":
         developer_mode = 1
         continue_with_loop = 1
@@ -55,7 +56,6 @@ while (continue_with_loop == 1):
 
 #Print the instructions if the user wants them
 if instructions_request == 1:
-    #Print the instructions
     welcome.print_instructions()
 
 #Don't print the instructions if the user doesn't want them
@@ -89,14 +89,14 @@ if developer_mode == 1:
 maze_navigator = trtl.Turtle()
 master_turtles_list.append(maze_navigator)
 
+#Output a message for debugging if the user is in developer mode
+if developer_mode == 1:
+    print("Maze Navigator Turtle Created")
+
 #Define a list of colors that will be the "lives" that the maze navigator has and a corresponding index variable
 maze_navigator_colors_list = ["green","yellow","red"]
 current_maze_navigator_color_index = 0
 current_maze_navigator_global_color_index = 0
-
-#Output a message for debugging if the user is in developer mode
-if developer_mode == 1:
-    print("Maze Navigator Turtle Created")
 
 #Create a turtle that will be used to track and display the time elapsed
 counter = trtl.Turtle()
@@ -340,7 +340,7 @@ def check_for_near_walls(current_maze_navigator_color_index): #Pass the color in
         #Grab canvas base property
         canvas_color = wn_canvas.itemcget(near_items[0], "fill")
 
-        #Stop the game if true
+        #Check if the maze navigator and wall are overlapping
         if canvas_color == maze_painter_pencolor:
             #After 3 lives are up, terminate the program
             if current_maze_navigator_color_index >= 3:
