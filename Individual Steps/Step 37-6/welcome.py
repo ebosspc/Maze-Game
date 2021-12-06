@@ -11,13 +11,13 @@ import turtle as trtl
 #####-Functions-#####
 def welcome_user():
     #Create a message in the terminal instructing users how to use the program
-    print("-----Welcome to the game!-----\nWould you like to read the instructions for the game?")
+    print("-----Welcome to the game!-----\nWould you like to read the instructions for the game?\n")
 
 def print_instructions():
     #Explain to users how the game work
     print("\n-Game Info-")
     print("This game will generate a randomly constructed filled with doors and barriers.")
-    print("doors are blank spaces or gaps in the wall that you can guide the maze navigator through.")
+    print("Doors are blank spaces or gaps in the wall that you can guide the maze navigator through.")
     print("Eventually, if you work your way through enough doors you will reach the outside of the maze and complete the game!")
     print("Barriers are obstructions you will find in your path, seeming like parts of the wall jutting out.")
     print("To complete your objective, you will have to go through doors in the maze while avoiding barrier obstructions.")
