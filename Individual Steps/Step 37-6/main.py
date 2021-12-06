@@ -621,7 +621,7 @@ for i in range(number_of_walls):
             #Go to the door location
             goto_door(distance_before_door)
 
-            #Draw the door
+            #Call the function to draw the door
             draw_door()
 
             #Draw the rest of the wall
