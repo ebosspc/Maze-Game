@@ -7,7 +7,7 @@ PLTW Lesson 1.2.4
 #Import turtle library for drawing functions and display
 import turtle as trtl
 
-#Import random library to generate random values to be used later
+#Import random library to generate random values
 import random as rand
 
 #Import library that contains functions necessary to begin the program
