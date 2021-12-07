@@ -10,7 +10,7 @@ import turtle as trtl
 #Import random library to generate random values
 import random as rand
 
-#Import library that contains functions necessary to begin the program
+#Import sections of code stored in welcome.py to make the program more concise
 import welcome as welcome
 
 
